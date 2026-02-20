@@ -124,7 +124,7 @@
                 <div class="header-right">
 
                     <div class="nav-actions">
-                        <a class="btn">
+                        <a href="https://wa.me/7907141487?text=Hi JetaFX! I came across your website and would like to discuss a potential collaboration. Please let me know a convenient time to connect. Thank you!" class="btn">
                             <span>Get Start</span>
                             <span></span>
                             <span>
@@ -518,7 +518,7 @@
                         </div>
 
                         <div class="hero-buttons fade-up2">
-                            <a class="btn">
+                            <a href="https://wa.me/7907141487?text=Hi JetaFX! I came across your website and would like to discuss a potential collaboration. Please let me know a convenient time to connect. Thank you!" class="btn">
                                 <span>Join Free Discord Community </span>
                                 <span></span>
                                 <span>
@@ -1039,7 +1039,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <a class="btn">
+                            <a href="https://wa.me/7907141487?text=Hi JetaFX! I came across your website and would like to discuss a potential collaboration. Please let me know a convenient time to connect. Thank you!" class="btn">
                                 <span>Join Free Discord Community </span>
                                 <span></span>
                                 <span>
@@ -1443,19 +1443,24 @@ function openSection(index) {
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-gsap.utils.toArray(".accordion-item").forEach((item) => {
+window.addEventListener("load", () => {
 
-  let arrowImg = item.querySelector(".arrow img");
+  gsap.utils.toArray(".arrow img").forEach((arrowImg) => {
 
-  gsap.to(arrowImg, {
-    height: 100,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: item,
-      start: "top 10%",
-      end: "top 50%",
-      scrub: true
-    }
+    gsap.fromTo(arrowImg,
+      { height: 0 },
+      {
+        height: 100,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: arrowImg,      // ✅ use itself
+          start: "top 85%",
+          end: "top 50%",
+          scrub: true
+        }
+      }
+    );
+
   });
 
 });

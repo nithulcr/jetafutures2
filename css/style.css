@@ -200,6 +200,7 @@ section {
     font-weight: 500;
     position: relative;
     padding-right: 50px;
+    text-decoration: none;
 
 }
 
@@ -1352,7 +1353,6 @@ margin: auto;
         display: block;
         object-fit: cover;
         object-fit: cover;
-    overflow: hidden;
     transition: .5s;
 }
     .community-section {
