@@ -20,7 +20,6 @@
     <style>
         /* loeader start */
         .preloader {
-            z-index: 5000;
             background: var(--bg-dark);
             grid-template-rows: auto auto;
             justify-content: center;
@@ -31,7 +30,7 @@
             height: 100%;
             min-height: 100vh;
             z-index: 999999;
-            transition: all 1.5s ease-in-out;
+            transition: all .8s ease-in-out;
             box-shadow: rgb(248 247 244 / 15%) 5px 5px 4rem;
         }
 
@@ -100,7 +99,7 @@
         <span>Support?</span>
 
         <div class="support-popup">
-            <a href="https://wa.me/7907141487" target="_blank" class="support-single support1">
+             <a href="https://wa.me/7907141487?text=Hi JetaFX! I came across your website and would like to discuss a potential collaboration. Please let me know a convenient time to connect. Thank you!" target="_blank" class="support-single support1">
 
                 <img src="images/whatsapp.png" class="icon" alt="Whatsapp">
             </a>
@@ -670,6 +669,9 @@
                             <h6 class="red">If this feels fair — you’ll fit right in</h6>
 
                         </div>
+                        <div class="arrow">
+                            <img src="images/arrow.png" class="arrow-img">
+                        </div>
                     </div>
                     <div class="accordion-item">
                         <div class="accordion-header gradient-text">Why Jeta futures is Diffrent</div>
@@ -711,6 +713,10 @@
 
 
                         </div>
+                         <div class="arrow">
+                            <img src="images/arrow.png" class="arrow-img">
+                        </div>
+
                     </div>
                     <div class="accordion-item">
                         <div class="accordion-header gradient-text">Inside The Jeta Futures Discord Community</div>
@@ -770,6 +776,10 @@
                             <h6 class="red">Stay connected to markets — without emotional overload.</h6>
 
                         </div>
+                        <div class="arrow">
+                            <img src="images/arrow.png" class="arrow-img">
+                        </div>
+
                     </div>
                     <div class="accordion-item">
                         <div class="accordion-header gradient-text">Specialized Trading Clubs</div>
@@ -851,6 +861,10 @@
                             <h6 class="red">⚠️ All discussions are for education only.</h6>
 
                         </div>
+                         <div class="arrow">
+                            <img src="images/arrow.png" class="arrow-img">
+                        </div>
+
                     </div>
                     <div class="accordion-item">
                         <div class="accordion-header gradient-text">Mindset & Psychology - The Real Edge</div>
@@ -891,6 +905,10 @@
                                 gap.</p>
 
                         </div>
+                         <div class="arrow">
+                            <img src="images/arrow.png" class="arrow-img">
+                        </div>
+
                     </div>
 
                     <div class="accordion-item">
@@ -928,6 +946,10 @@
                                 claims. <span style="color: #FF6F47;">|</span> Only real traders learning together.</p>
 
                         </div>
+                         <div class="arrow">
+                            <img src="images/arrow.png" class="arrow-img">
+                        </div>
+
                     </div>
 
                     <div class="accordion-item">
@@ -1192,190 +1214,148 @@
 
     </script>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+<script>
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-        const timeline = document.getElementById("timeline");
-        const timelineItems = document.querySelectorAll(".timeline-item");
-        const accordionItems = document.querySelectorAll(".accordion-item");
+const timeline = document.getElementById("timeline");
+const timelineItems = document.querySelectorAll(".timeline-item");
+const accordionItems = document.querySelectorAll(".accordion-item");
 
-        const defaultHeight = 70;
-        let isDesktop = window.innerWidth >= 768;
+const defaultHeight = 70;
+let isDesktop = window.innerWidth >= 768;
 
-        /* ======================================
-           INIT
-        ====================================== */
-        window.addEventListener("load", handleResponsive);
+/* ======================================
+   INIT
+====================================== */
+window.addEventListener("load", () => {
+  if (isDesktop) initDesktop();
+});
 
-        window.addEventListener("resize", () => {
-            const newIsDesktop = window.innerWidth >= 768;
+window.addEventListener("resize", () => {
 
-            if (newIsDesktop !== isDesktop) {
-                isDesktop = newIsDesktop;
+  const newIsDesktop = window.innerWidth >= 768;
 
-                // Kill only accordion ScrollTriggers
-                ScrollTrigger.getAll().forEach(st => {
-                    if (st.vars.trigger && st.vars.trigger.classList.contains("accordion-item")) {
-                        st.kill();
-                    }
-                });
+  if (newIsDesktop !== isDesktop) {
 
-                handleResponsive();
-            }
-        });
+    isDesktop = newIsDesktop;
 
-        /* ======================================
-           RESPONSIVE HANDLER
-        ====================================== */
-        function handleResponsive() {
-            if (isDesktop) {
-                initDesktop();
-            } else {
-                initMobileTabs();
-            }
-        }
+    // Kill ALL ScrollTriggers
+    ScrollTrigger.getAll().forEach(st => st.kill());
 
-        /* ======================================
-           DESKTOP LOGIC (Scroll Controlled)
-        ====================================== */
-        function initDesktop() {
+    if (isDesktop) {
+      initDesktop();
+    } else {
+      resetMobile();
+    }
+  }
 
-            // Hide all except first
-            accordionItems.forEach((item, index) => {
-                gsap.set(item, { autoAlpha: index === 0 ? 1 : 0 });
-            });
+});
 
-            openSection(0);
+/* ======================================
+   DESKTOP LOGIC ONLY
+====================================== */
+function initDesktop() {
 
-            // Scroll activation
-            accordionItems.forEach((item, index) => {
+  // Hide all except first
+  accordionItems.forEach((item, index) => {
+    gsap.set(item, { autoAlpha: index === 0 ? 1 : 0 });
+  });
 
-                ScrollTrigger.create({
-                    trigger: item,
-                    start: "top center",
-                    onEnter: () => openSection(index),
-                    onEnterBack: () => openSection(index)
-                });
+  openSection(0);
 
-            });
+  accordionItems.forEach((item, index) => {
 
-            // Timeline click scroll
-            timelineItems.forEach((item, index) => {
+    ScrollTrigger.create({
+      trigger: item,
+      start: "top center",
+      onEnter: () => openSection(index),
+      onEnterBack: () => openSection(index)
+    });
 
-                item.onclick = () => {
-                    gsap.to(window, {
-                        scrollTo: {
-                            y: accordionItems[index],
-                            offsetY: 100
-                        },
-                        duration: 0.8,
-                        ease: "power2.inOut"
-                    });
-                };
+  });
 
-            });
+  timelineItems.forEach((item, index) => {
 
-        }
+    item.onclick = () => {
+      gsap.to(window, {
+        scrollTo: {
+          y: accordionItems[index],
+          offsetY: 100
+        },
+        duration: 0.8,
+        ease: "power2.inOut"
+      });
+    };
 
-        /* ======================================
-           MOBILE LOGIC (TABS)
-        ====================================== */
-        function initMobileTabs() {
+  });
 
-            // Remove timeline height animation
-            timelineItems.forEach(item => {
-                gsap.set(item, { clearProps: "all" });
-            });
+}
 
-            // Hide all accordion items except first
-            accordionItems.forEach((item, index) => {
-                gsap.set(item, { display: index === 0 ? "block" : "none" });
-            });
+/* ======================================
+   RESET TO NORMAL MOBILE
+====================================== */
+function resetMobile() {
 
-            // Set first active
-            timelineItems.forEach((item, index) => {
-                item.classList.toggle("active", index === 0);
-            });
+  // Clear all GSAP inline styles
+  timelineItems.forEach(item => {
+    gsap.set(item, { clearProps: "all" });
+    item.classList.remove("active");
+    item.onclick = null;
+  });
 
-            // Timeline click = tab switch
-            timelineItems.forEach((item, index) => {
+  accordionItems.forEach(item => {
+    gsap.set(item, { clearProps: "all" });
+  });
 
-                item.onclick = () => {
+}
 
-                    accordionItems.forEach((acc, i) => {
-                        acc.style.display = i === index ? "block" : "none";
-                    });
+/* ======================================
+   TIMELINE HEIGHT CONTROL
+====================================== */
+function openSection(index) {
 
-                    timelineItems.forEach((t, i) => {
-                        t.classList.toggle("active", i === index);
-                    });
+  const totalHeight = timeline.offsetHeight;
+  const totalItems = timelineItems.length;
+  const activeHeight = totalHeight - (defaultHeight * (totalItems - 1));
 
-                    // Scroll to content smoothly
-                    gsap.to(window, {
-                        scrollTo: {
-                            y: accordionItems[i],
-                            offsetY: 120
-                        },
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
+  timelineItems.forEach((item, i) => {
 
+    if (i === index) {
 
-                };
+      item.classList.add("active");
 
-            });
+      gsap.to(item, {
+        height: activeHeight,
+        duration: 0.4,
+        ease: "power2.out"
+      });
 
-        }
+      gsap.to(accordionItems[i], {
+        autoAlpha: 1,
+        duration: 0.3
+      });
 
-        /* ======================================
-           DESKTOP TIMELINE HEIGHT CONTROL
-        ====================================== */
-        function openSection(index) {
+    } else {
 
-            if (!isDesktop) return;
+      item.classList.remove("active");
 
-            const totalHeight = timeline.offsetHeight;
-            const totalItems = timelineItems.length;
-            const activeHeight = totalHeight - (defaultHeight * (totalItems - 1));
+      gsap.to(item, {
+        height: defaultHeight,
+        duration: 0.4,
+        ease: "power2.out"
+      });
 
-            timelineItems.forEach((item, i) => {
+      gsap.to(accordionItems[i], {
+        autoAlpha: 0,
+        duration: 0.2
+      });
 
-                if (i === index) {
+    }
 
-                    item.classList.add("active");
+  });
 
-                    gsap.to(item, {
-                        height: activeHeight,
-                        duration: 0.4,
-                        ease: "power2.out"
-                    });
-
-                    gsap.to(accordionItems[i], {
-                        autoAlpha: 1,
-                        duration: 0.3
-                    });
-
-                } else {
-
-                    item.classList.remove("active");
-
-                    gsap.to(item, {
-                        height: defaultHeight,
-                        duration: 0.4,
-                        ease: "power2.out"
-                    });
-
-                    gsap.to(accordionItems[i], {
-                        autoAlpha: 0,
-                        duration: 0.2
-                    });
-
-                }
-
-            });
-
-        }
-    </script>
+}
+</script>
 
 
     <script>
@@ -1459,6 +1439,27 @@
         });
     </script>
 
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.utils.toArray(".accordion-item").forEach((item) => {
+
+  let arrowImg = item.querySelector(".arrow img");
+
+  gsap.to(arrowImg, {
+    height: 100,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: item,
+      start: "top 10%",
+      end: "top 50%",
+      scrub: true
+    }
+  });
+
+});
+</script>
 </body>
 
 </html>
