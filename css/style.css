@@ -21,9 +21,9 @@ a {
     cursor: pointer;
 }
 
-html {
+/* html {
     scroll-behavior: smooth;
-}
+} */
 
 body {
     font-family: "DM Sans", sans-serif;
@@ -59,25 +59,22 @@ section {
     border-radius: 50%;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
-
-.fixed-contact.fixed-contact2 {
-    position: fixed;
-    left: 20px;
-    bottom: 20px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
+.support-popup a{
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  opacity: 0;
+  pointer-events: none;
+}
+.fixed-contact .support-icon {
     width: 70px;
     height: 70px;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
 }
-
-.fixed-contact img {
-    width: 70px;
-    height: 70px;
+.fixed-contact .support-popup img {
+    width: 40px;
+    height: 40px;
 }
 
 .text {
@@ -845,16 +842,18 @@ section {
 .community-section {
     padding: 100px 0;
     position: relative;
-     background: url(../images/accordion-shape.png);
+     background: url(../images/bg-communication.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: 280px;
+    background-size: 60vw;
+    background-position: right;
+    z-index: 1;
 }
 
 .community-section::before {
     content: '';
-    background: url(../images/bg-communication.png);
+    background: url(../images/accordion-shape.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -863,7 +862,51 @@ section {
     width: 100%;
     height: 100%;
     right: 0;
-    background-position: right;
+    background-position: left;
+}
+/* .community-section::after {
+    content: '';
+    background: url(../images/ellipse.png);
+    background-size:50px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: absolute;
+    background-position: right 50%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+    right: 0;
+    opacity: .2;
+
+} */
+
+
+.ellipse-bg{
+  position:fixed;
+  top:0;
+  right:-25px;
+  width:100%;
+  height:100%;
+  background:url(../images/ellipse.png) no-repeat right 50%;
+  background-size:50px;
+  opacity:.1;
+  pointer-events:none;
+  z-index:0;
+  transform-origin: right center; 
+  transform: scale(1);
+}
+.ellipse-bg2{
+  position:fixed;
+  top:200px;
+left:240px;
+  width:100%;
+  height:100%;
+  background:url(../images/ellipse2.png) no-repeat left 50%;
+  background-size:50px;
+  pointer-events:none;
+  z-index:0;
+  transform-origin: left center; 
+  transform: scale(1);
 }
 .community-wrapper {
    
@@ -871,7 +914,7 @@ section {
     display: flex;
     z-index: 99;
     position: relative;
-    max-width: calc(100% - 250px);
+    max-width: 1360px;
 }
 
 /* ================= LEFT TIMELINE ================= */
@@ -931,6 +974,7 @@ section {
     padding: 6px 20px;
     margin-left: -2px;
     border-radius: 10px;
+    color: #3D5CCC;
 
 }
 
@@ -940,6 +984,7 @@ section {
 
 .timeline-item.active span {
     opacity: 1;
+    color: white;
 }
 
 /* ================= RIGHT SIDE ================= */
@@ -981,6 +1026,7 @@ section {
     align-items: center;
     gap: 15px;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 .grid-2 {
@@ -1301,24 +1347,44 @@ section {
      padding: 0 20px;
 
 }
-.accordion-header {
-        padding: 10px 15px;
-        border-radius: 20px;
-        position: relative;
-        overflow: hidden;
-        border: 1px solid  #203361;
-        margin: 0;
-}
+
 .grid-2 li{
     font-size: 15px;
 }
 .grid-2 li img{
     width: 25px;
 }
-.timeline{
+.community-wrapper{
+    flex-direction: column;
+}
+/* .timeline{
+    display: none;
+} */
+.timeline::before, .timeline-dot{
     display: none;
 }
-
+.timeline-item{
+    height: 35px!important;
+}
+.timeline {
+    width: 100%;
+    height: 60px;
+    flex-direction: row;
+    overflow: auto;
+    gap: 14px;
+    white-space: nowrap;
+    margin-bottom: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    top: 80px;
+    background: #071d38;
+}
+.community-section{
+    padding-top: 0;
+}
+.timeline-item span{
+    margin-top: 0;
+}
 .tags {
     gap: 15px;
     flex-wrap: wrap;
@@ -1454,7 +1520,7 @@ section {
         gap: 5px;
     }
     .accordion-header {
-    font-size: 18px;
+    font-size: 24px;
     line-height: 1.2
 
 }
@@ -1462,11 +1528,11 @@ section {
     font-size: 16px;
 }
 .community-section::before{
-    background-size: 300px;
+    background-size: 200px;
 }
 .community-section {
 
-    background-size: 158px;
+    background-size: 70%;
 }
 .footer .row {
 

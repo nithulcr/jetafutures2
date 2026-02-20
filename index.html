@@ -94,14 +94,27 @@
 
         </div>
     </div>
-    <a href="tel:+9999999999" target="_blank" class="fixed-contact">
+    <div class="fixed-contact">
 
-        <img src="images/message.png" class="icon" alt="Message">
-    </a>
-    <a href="https://wa.me/+9999999999" target="_blank" class="fixed-contact fixed-contact2">
+        <img src="images/support.png" class="support-icon" alt="Message">
+        <span>Support?</span>
 
-        <img src="images/whatsapp.png" class="icon" alt="Whatsapp">
-    </a>
+        <div class="support-popup">
+            <a href="https://wa.me/7907141487" target="_blank" class="support-single support1">
+
+                <img src="images/whatsapp.png" class="icon" alt="Whatsapp">
+            </a>
+            <a href="https://ig.me/m/jeta_futures" target="_blank" class="support-single support2">
+
+                <img src="images/instagram.png" class="icon" alt="instagram">
+            </a>
+            <a href="tel:7907141487" target="_blank" class="support-single support3">
+
+                <img src="images/call.png" class="icon" alt="call">
+            </a>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -557,7 +570,11 @@
                 </div>
             </div>
         </section>
+
         <section class="community-section">
+            <div class="ellipse-bg"></div>
+            <div class="ellipse-bg2"></div>
+
             <div class="community-wrapper">
 
                 <!-- LEFT TIMELINE -->
@@ -879,7 +896,7 @@
                     <div class="accordion-item">
                         <div class="accordion-header gradient-text">Trust & Social proof</div>
                         <div class="accordion-content">
-                            
+
 
                             <div class="grid-2">
 
@@ -1054,7 +1071,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>Copyright © Jetaf futures. 2025   </p>
+                <p>Copyright © Jetaf futures. 2026   </p>
 
             </div>
         </div>
@@ -1176,7 +1193,6 @@
     </script>
 
     <script>
-
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
         const timeline = document.getElementById("timeline");
@@ -1189,14 +1205,15 @@
         /* ======================================
            INIT
         ====================================== */
-        window.addEventListener("load", () => {
-            handleResponsive();
-        });
+        window.addEventListener("load", handleResponsive);
 
         window.addEventListener("resize", () => {
             const newIsDesktop = window.innerWidth >= 768;
+
             if (newIsDesktop !== isDesktop) {
                 isDesktop = newIsDesktop;
+
+                // Kill only accordion ScrollTriggers
                 ScrollTrigger.getAll().forEach(st => {
                     if (st.vars.trigger && st.vars.trigger.classList.contains("accordion-item")) {
                         st.kill();
@@ -1211,28 +1228,26 @@
            RESPONSIVE HANDLER
         ====================================== */
         function handleResponsive() {
-
             if (isDesktop) {
                 initDesktop();
             } else {
-                initMobile();
+                initMobileTabs();
             }
-
         }
 
         /* ======================================
-           DESKTOP LOGIC
+           DESKTOP LOGIC (Scroll Controlled)
         ====================================== */
         function initDesktop() {
 
-            // Show all accordion content
-            accordionItems.forEach(item => {
-                const content = item.querySelector(".accordion-content");
-                gsap.set(content, { height: "auto", opacity: 1 });
+            // Hide all except first
+            accordionItems.forEach((item, index) => {
+                gsap.set(item, { autoAlpha: index === 0 ? 1 : 0 });
             });
 
             openSection(0);
 
+            // Scroll activation
             accordionItems.forEach((item, index) => {
 
                 ScrollTrigger.create({
@@ -1244,6 +1259,7 @@
 
             });
 
+            // Timeline click scroll
             timelineItems.forEach((item, index) => {
 
                 item.onclick = () => {
@@ -1262,45 +1278,48 @@
         }
 
         /* ======================================
-           MOBILE ACCORDION LOGIC
+           MOBILE LOGIC (TABS)
         ====================================== */
-        function initMobile() {
+        function initMobileTabs() {
 
-            // Reset timeline heights
+            // Remove timeline height animation
             timelineItems.forEach(item => {
-                gsap.set(item, { height: defaultHeight });
-                item.classList.remove("active");
+                gsap.set(item, { clearProps: "all" });
             });
 
+            // Hide all accordion items except first
             accordionItems.forEach((item, index) => {
+                gsap.set(item, { display: index === 0 ? "block" : "none" });
+            });
 
-                const header = item.querySelector(".accordion-header");
-                const content = item.querySelector(".accordion-content");
+            // Set first active
+            timelineItems.forEach((item, index) => {
+                item.classList.toggle("active", index === 0);
+            });
 
-                // hide all
-                gsap.set(content, { height: 0, opacity: 0, overflow: "hidden" });
+            // Timeline click = tab switch
+            timelineItems.forEach((item, index) => {
 
-                header.onclick = () => {
+                item.onclick = () => {
 
-                    const isOpen = content.offsetHeight > 0;
-
-                    // close all first
-                    accordionItems.forEach(i => {
-                        const c = i.querySelector(".accordion-content");
-                        gsap.to(c, {
-                            height: 0,
-                            opacity: 0,
-                            duration: 0.3
-                        });
+                    accordionItems.forEach((acc, i) => {
+                        acc.style.display = i === index ? "block" : "none";
                     });
 
-                    if (!isOpen) {
-                        gsap.to(content, {
-                            height: content.scrollHeight,
-                            opacity: 1,
-                            duration: 0.4
-                        });
-                    }
+                    timelineItems.forEach((t, i) => {
+                        t.classList.toggle("active", i === index);
+                    });
+
+                    // Scroll to content smoothly
+                    gsap.to(window, {
+                        scrollTo: {
+                            y: accordionItems[i],
+                            offsetY: 120
+                        },
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+
 
                 };
 
@@ -1309,7 +1328,7 @@
         }
 
         /* ======================================
-           TIMELINE HEIGHT CONTROL
+           DESKTOP TIMELINE HEIGHT CONTROL
         ====================================== */
         function openSection(index) {
 
@@ -1331,6 +1350,11 @@
                         ease: "power2.out"
                     });
 
+                    gsap.to(accordionItems[i], {
+                        autoAlpha: 1,
+                        duration: 0.3
+                    });
+
                 } else {
 
                     item.classList.remove("active");
@@ -1341,15 +1365,99 @@
                         ease: "power2.out"
                     });
 
+                    gsap.to(accordionItems[i], {
+                        autoAlpha: 0,
+                        duration: 0.2
+                    });
+
                 }
 
             });
 
         }
-
     </script>
 
 
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to(".ellipse-bg", {
+            right: "100px",
+            scale: 2.5,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".community-section",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    </script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to(".ellipse-bg2", {
+            scale: 2.5,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".community-section",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    </script>
+
+    <script>
+        gsap.registerPlugin();
+
+        const button = document.querySelector(".fixed-contact");
+        const popupItems = document.querySelectorAll(".support-popup a");
+
+        let isOpen = false;
+
+        const tl = gsap.timeline({ paused: true });
+
+        tl.to(popupItems, {
+            opacity: 1,
+            pointerEvents: "auto",
+            duration: 0.2
+        });
+
+        tl.to(".support1", {
+            x: -10,
+            y: -70,
+            duration: 0.4,
+            ease: "back.out(1.7)"
+        }, 0);
+
+        tl.to(".support2", {
+            x: -50,
+            y: -40,
+            duration: 0.4,
+            ease: "back.out(1.7)"
+        }, 0.05);
+
+        tl.to(".support3", {
+            x: -60,
+            y: 10,
+            duration: 0.4,
+            ease: "back.out(1.7)"
+        }, 0.1);
+
+        button.addEventListener("click", (e) => {
+
+            // prevent clicking links when closed
+            if (!isOpen) {
+                tl.play();
+            } else {
+                tl.reverse();
+            }
+
+            isOpen = !isOpen;
+
+        });
+    </script>
 
 </body>
 
